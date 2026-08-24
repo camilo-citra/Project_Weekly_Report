@@ -10,16 +10,66 @@ import {
   Calendar,
   Layers,
   ChevronDown,
-  ChevronUp
+  ChevronUp,
+  Copy,
+  Check
 } from 'lucide-react';
 
 export default function ExecutiveReportView({ report }) {
   const [collapsedProjects, setCollapsedProjects] = useState({});
+  const [copiedId, setCopiedId] = useState(null);
 
   if (!report) return null;
 
   const toggleCollapse = (id) => {
     setCollapsedProjects(prev => ({ ...prev, [id]: !prev[id] }));
+  };
+
+  const buildProjectText = (proj) => {
+    let text = `Date: ${proj.meetingDate || report.reportDate}\n`;
+    text += `Project name: ${proj.projectName}\n`;
+    text += `Executive summary: ${proj.summary}\n`;
+    text += `Project risks:\n`;
+    if (proj.keyRisks && proj.keyRisks.length > 0) {
+      proj.keyRisks.forEach(r => {
+        const detail = typeof r === 'string' ? r : (r.risk ? `${r.risk}${r.impact ? ': ' + r.impact : ''}` : JSON.stringify(r));
+        text += `• ${detail}\n`;
+      });
+    } else {
+      text += `• No critical risks identified.\n`;
+    }
+    text += `Key decisions:\n`;
+    if (proj.criticalDecisions && proj.criticalDecisions.length > 0) {
+      proj.criticalDecisions.forEach(d => {
+        text += `• ${d}\n`;
+      });
+    } else {
+      text += `• No key decisions recorded for this period.\n`;
+    }
+    text += `The Way Forward:\n`;
+    if (proj.wayForward && proj.wayForward.length > 0) {
+      proj.wayForward.forEach(w => {
+        const detail = typeof w === 'string' ? w : `${w.task}${w.owner ? ' (Owner: ' + w.owner : ''}${w.deadline ? ', Target: ' + w.deadline + ')' : ')'}`;
+        text += `• ${detail}\n`;
+      });
+    } else {
+      text += `• Proceed as scheduled.\n`;
+    }
+    return text;
+  };
+
+  const handleCopyProject = (proj) => {
+    const text = buildProjectText(proj);
+    navigator.clipboard.writeText(text);
+    setCopiedId(proj.id);
+    setTimeout(() => setCopiedId(null), 2000);
+  };
+
+  const handleCopyAll = () => {
+    const allText = report.projects.map(p => buildProjectText(p)).join('\n\n---\n\n');
+    navigator.clipboard.writeText(allText);
+    setCopiedId('ALL');
+    setTimeout(() => setCopiedId(null), 2000);
   };
 
   return (
@@ -31,20 +81,27 @@ export default function ExecutiveReportView({ report }) {
           <div>
             <div className="flex items-center space-x-2 text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 mb-1">
               <Layers className="w-4 h-4" />
-              <span>Consolidated Executive Report • Past Week</span>
+              <span>Consolidated Executive Report • Executive Bullet-Point Format</span>
             </div>
             <h2 className="text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">
               Weekly Portfolio Executive Summary
             </h2>
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-              Compiled from latest Google Doc tabs • Archived on {report.reportDate}
+              Formatted according to standard Executive Summary structure • Date: {report.reportDate}
             </p>
           </div>
 
           <div className="flex items-center space-x-3 text-xs">
+            <button
+              onClick={handleCopyAll}
+              className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl font-medium flex items-center gap-2 shadow-sm transition-colors"
+            >
+              {copiedId === 'ALL' ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+              <span>{copiedId === 'ALL' ? 'Copied Full Executive Report!' : 'Copy All Reports (Text)'}</span>
+            </button>
             <div className="bg-slate-100 dark:bg-slate-900 px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center gap-2">
               <Calendar className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
-              <span className="text-slate-700 dark:text-slate-300 font-mono">Week Ending: {report.reportDate}</span>
+              <span className="text-slate-700 dark:text-slate-300 font-mono">Date: {report.reportDate}</span>
             </div>
           </div>
         </div>
@@ -77,7 +134,7 @@ export default function ExecutiveReportView({ report }) {
             </div>
             <div>
               <div className="text-2xl font-black text-emerald-600 dark:text-emerald-400">{report.decisionsCount}</div>
-              <div className="text-xs text-slate-500 dark:text-slate-400">Critical Decisions</div>
+              <div className="text-xs text-slate-500 dark:text-slate-400">Key Decisions</div>
             </div>
           </div>
 
@@ -87,7 +144,7 @@ export default function ExecutiveReportView({ report }) {
             </div>
             <div>
               <div className="text-2xl font-black text-purple-600 dark:text-purple-400">{report.actionItemsCount}</div>
-              <div className="text-xs text-slate-500 dark:text-slate-400">Way Forward Tasks</div>
+              <div className="text-xs text-slate-500 dark:text-slate-400">Way Forward Items</div>
             </div>
           </div>
         </div>
@@ -107,10 +164,10 @@ export default function ExecutiveReportView({ report }) {
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-bold text-slate-900 dark:text-white tracking-tight">
-            Individual Project Executive Summaries ({report.projects?.length})
+            Individual Executive Project Summaries ({report.projects?.length})
           </h3>
           <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">
-            Mandatory Sections: Summary • Key Risks • Critical Decisions • Way Forward
+            Structure: Date • Project name • Executive summary • Project risks • Key decisions • Way forward
           </span>
         </div>
 
@@ -134,110 +191,109 @@ export default function ExecutiveReportView({ report }) {
                   <div>
                     <h4 className="text-lg font-bold text-slate-900 dark:text-white tracking-tight">{proj.projectName}</h4>
                     <p className="text-xs text-slate-500 dark:text-slate-400">
-                      Doc: <span className="text-slate-700 dark:text-slate-300 font-medium">{proj.docTitle}</span> • 
-                      Tab Targeted: <span className="text-indigo-600 dark:text-indigo-300 font-mono font-medium">{proj.latestTabName}</span>
+                      Date: <span className="text-indigo-600 dark:text-indigo-300 font-medium">{proj.meetingDate || report.reportDate}</span> • 
+                      Doc: <span className="text-slate-700 dark:text-slate-300 font-medium">{proj.docTitle}</span>
                     </p>
                   </div>
                 </div>
 
-                <button
-                  onClick={() => toggleCollapse(proj.id)}
-                  className="p-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
-                >
-                  {isCollapsed ? <ChevronDown className="w-5 h-5" /> : <ChevronUp className="w-5 h-5" />}
-                </button>
+                <div className="flex items-center space-x-2">
+                  <button
+                    onClick={() => handleCopyProject(proj)}
+                    className="px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-medium text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 flex items-center gap-1.5 transition-colors"
+                    title="Copy formatted executive text"
+                  >
+                    {copiedId === proj.id ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
+                    <span>{copiedId === proj.id ? 'Copied!' : 'Copy Text'}</span>
+                  </button>
+                  <button
+                    onClick={() => toggleCollapse(proj.id)}
+                    className="p-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                  >
+                    {isCollapsed ? <ChevronDown className="w-5 h-5" /> : <ChevronUp className="w-5 h-5" />}
+                  </button>
+                </div>
               </div>
 
               {!isCollapsed && (
-                <div className="p-6 space-y-6">
+                <div className="p-6 space-y-6 text-sm text-slate-800 dark:text-slate-200">
                   
-                  {/* 1. Summary */}
+                  {/* Metadata Fields */}
+                  <div className="space-y-1 font-mono text-xs bg-slate-100 dark:bg-slate-900/90 p-3 rounded-xl border border-slate-200 dark:border-slate-800">
+                    <div><strong className="text-slate-500 dark:text-slate-400">Date:</strong> <span className="text-slate-900 dark:text-white">{proj.meetingDate || report.reportDate}</span></div>
+                    <div><strong className="text-slate-500 dark:text-slate-400">Project name:</strong> <span className="text-indigo-600 dark:text-indigo-300 font-bold">{proj.projectName}</span></div>
+                  </div>
+
+                  {/* Executive Summary */}
                   <div>
                     <h5 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2 flex items-center gap-1.5">
                       <FileText className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
-                      <span>1. Past Week Executive Summary</span>
+                      <span>Executive summary:</span>
                     </h5>
                     <p className="text-sm text-slate-800 dark:text-slate-200 bg-slate-50 dark:bg-slate-900/60 p-4 rounded-xl border border-slate-200 dark:border-slate-800/80 leading-relaxed">
                       {proj.summary}
                     </p>
                   </div>
 
-                  {/* 2. Key Risks */}
+                  {/* Project Risks */}
                   <div>
-                    <h5 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3 flex items-center gap-1.5">
+                    <h5 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2 flex items-center gap-1.5">
                       <ShieldAlert className="w-4 h-4 text-rose-600 dark:text-rose-400" />
-                      <span>2. Key Risks & Mitigations</span>
+                      <span>Project risks:</span>
                     </h5>
 
-                    <div className="overflow-x-auto">
-                      <table className="w-full text-left text-xs border-collapse">
-                        <thead>
-                          <tr className="border-b border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 uppercase tracking-wider font-semibold">
-                            <th className="py-2.5 px-3">Level</th>
-                            <th className="py-2.5 px-3">Risk Description</th>
-                            <th className="py-2.5 px-3">Business Impact</th>
-                            <th className="py-2.5 px-3">Mitigation Strategy</th>
-                          </tr>
-                        </thead>
-                        <tbody className="divide-y divide-slate-200 dark:divide-slate-800/60">
-                          {proj.keyRisks?.map((riskItem, rIdx) => (
-                            <tr key={rIdx} className="hover:bg-slate-50 dark:hover:bg-slate-900/50">
-                              <td className="py-3 px-3">
-                                <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
-                                  riskItem.level === 'High' ? 'badge-rose' :
-                                  riskItem.level === 'Medium' ? 'badge-amber' :
-                                  'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300'
-                                }`}>
-                                  {riskItem.level}
-                                </span>
-                              </td>
-                              <td className="py-3 px-3 font-medium text-slate-900 dark:text-slate-200">{riskItem.risk}</td>
-                              <td className="py-3 px-3 text-slate-700 dark:text-slate-300">{riskItem.impact}</td>
-                              <td className="py-3 px-3 text-indigo-700 dark:text-indigo-300 font-medium">{riskItem.mitigation}</td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
+                    <ul className="space-y-2 bg-slate-50 dark:bg-slate-900/60 p-4 rounded-xl border border-slate-200 dark:border-slate-800/80">
+                      {proj.keyRisks?.map((riskItem, rIdx) => {
+                        const riskText = typeof riskItem === 'string' 
+                          ? riskItem 
+                          : `${riskItem.risk}${riskItem.impact ? ' — ' + riskItem.impact : ''}`;
+                        return (
+                          <li key={rIdx} className="flex items-start space-x-2 text-xs">
+                            <span className="text-rose-500 dark:text-rose-400 font-bold shrink-0">•</span>
+                            <span className="text-slate-800 dark:text-slate-200 leading-relaxed">{riskText}</span>
+                          </li>
+                        );
+                      })}
+                    </ul>
                   </div>
 
-                  {/* 3. Critical Decisions */}
+                  {/* Key Decisions */}
                   <div>
-                    <h5 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3 flex items-center gap-1.5">
+                    <h5 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2 flex items-center gap-1.5">
                       <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                      <span>3. Critical Decisions Approved</span>
+                      <span>Key decisions:</span>
                     </h5>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <ul className="space-y-2 bg-slate-50 dark:bg-slate-900/60 p-4 rounded-xl border border-slate-200 dark:border-slate-800/80">
                       {proj.criticalDecisions?.map((dec, dIdx) => (
-                        <div key={dIdx} className="bg-slate-50 dark:bg-slate-900/60 border border-emerald-200 dark:border-emerald-900/40 rounded-xl p-3.5 flex items-start space-x-3">
-                          <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
-                          <span className="text-xs text-slate-800 dark:text-slate-200 font-medium leading-normal">{dec}</span>
-                        </div>
+                        <li key={dIdx} className="flex items-start space-x-2 text-xs">
+                          <span className="text-emerald-500 dark:text-emerald-400 font-bold shrink-0">•</span>
+                          <span className="text-slate-800 dark:text-slate-200 leading-relaxed">{dec}</span>
+                        </li>
                       ))}
-                    </div>
+                    </ul>
                   </div>
 
-                  {/* 4. Way Forward */}
+                  {/* Way Forward */}
                   <div>
-                    <h5 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3 flex items-center gap-1.5">
+                    <h5 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2 flex items-center gap-1.5">
                       <Clock className="w-4 h-4 text-purple-600 dark:text-purple-400" />
-                      <span>4. Way Forward & Deliverables</span>
+                      <span>The Way Forward:</span>
                     </h5>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                      {proj.wayForward?.map((wf, wIdx) => (
-                        <div key={wIdx} className="bg-slate-50 dark:bg-slate-900/70 border border-slate-200 dark:border-slate-800 rounded-xl p-3.5 flex flex-col justify-between space-y-2">
-                          <div className="text-xs font-medium text-slate-800 dark:text-slate-200 line-clamp-2">
-                            {wf.task}
-                          </div>
-                          <div className="flex items-center justify-between text-[11px] pt-2 border-t border-slate-200 dark:border-slate-800/80">
-                            <span className="text-slate-500 dark:text-slate-400 font-medium">Owner: <strong className="text-indigo-600 dark:text-indigo-300">{wf.owner}</strong></span>
-                            <span className="text-purple-600 dark:text-purple-300 font-mono font-medium">{wf.deadline}</span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
+                    <ul className="space-y-2 bg-slate-50 dark:bg-slate-900/60 p-4 rounded-xl border border-slate-200 dark:border-slate-800/80">
+                      {proj.wayForward?.map((wf, wIdx) => {
+                        const wayText = typeof wf === 'string'
+                          ? wf
+                          : `${wf.task}${wf.owner ? ' (' + wf.owner + ')' : ''}`;
+                        return (
+                          <li key={wIdx} className="flex items-start space-x-2 text-xs">
+                            <span className="text-purple-500 dark:text-purple-400 font-bold shrink-0">•</span>
+                            <span className="text-slate-800 dark:text-slate-200 leading-relaxed">{wayText}</span>
+                          </li>
+                        );
+                      })}
+                    </ul>
                   </div>
 
                 </div>
@@ -250,3 +306,4 @@ export default function ExecutiveReportView({ report }) {
     </div>
   );
 }
+

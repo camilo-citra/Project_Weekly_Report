@@ -200,40 +200,30 @@ export default function App() {
 
       report.projects?.forEach(p => {
         docHtml += `
-          <div style="margin-bottom: 30px;">
-            <h3>${p.projectName} &nbsp;<span class="status-badge ${p.status === 'At Risk' ? 'badge-risk' : 'badge-track'}">${p.status}</span></h3>
-            <p><strong>Summary:</strong> ${p.summary}</p>
+          <div style="margin-bottom: 30px; border-bottom: 1px solid #e2e8f0; padding-bottom: 20px;">
+            <p><strong>Date:</strong> ${p.meetingDate || report.reportDate}</p>
+            <p><strong>Project name:</strong> ${p.projectName}</p>
+            <p><strong>Executive summary:</strong> ${p.summary}</p>
             
-            <h4>Key Risks & Mitigations</h4>
-            <table>
-              <thead>
-                <tr>
-                  <th style="width:25%;">Risk</th>
-                  <th style="width:30%;">Impact</th>
-                  <th style="width:15%;">Level</th>
-                  <th style="width:30%;">Mitigation</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${p.keyRisks?.map(r => `
-                  <tr>
-                    <td><strong>${r.risk}</strong></td>
-                    <td>${r.impact}</td>
-                    <td><strong>${r.level}</strong></td>
-                    <td>${r.mitigation}</td>
-                  </tr>
-                `).join('')}
-              </tbody>
-            </table>
+            <p><strong>Project risks:</strong></p>
+            <ul>
+              ${p.keyRisks?.map(r => {
+                const detail = typeof r === 'string' ? r : (r.risk ? `${r.risk}${r.impact ? ': ' + r.impact : ''}` : JSON.stringify(r));
+                return `<li>${detail}</li>`;
+              }).join('')}
+            </ul>
             
-            <h4>Critical Decisions Approved</h4>
+            <p><strong>Key decisions:</strong></p>
             <ul>
               ${p.criticalDecisions?.map(d => `<li>${d}</li>`).join('')}
             </ul>
             
-            <h4>Way Forward & Deliverables</h4>
+            <p><strong>The Way Forward:</strong></p>
             <ul>
-              ${p.wayForward?.map(w => `<li><strong>${w.task}</strong> — <em>Owner: ${w.owner} (Target: ${w.deadline})</em></li>`).join('')}
+              ${p.wayForward?.map(w => {
+                const detail = typeof w === 'string' ? w : `${w.task}${w.owner ? ' (Owner: ' + w.owner + ')' : ''}`;
+                return `<li>${detail}</li>`;
+              }).join('')}
             </ul>
           </div>
         `;

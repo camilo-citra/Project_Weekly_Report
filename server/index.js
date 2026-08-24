@@ -359,16 +359,37 @@ app.post('/api/save-weekly-archive', async (req, res) => {
     mdContent += `--- \n\n## Project Status Summaries\n\n`;
 
     report.projects?.forEach(p => {
-      mdContent += `### ${p.projectName} [${p.status}]\n`;
-      mdContent += `**Summary**: ${p.summary}\n\n`;
-      mdContent += `#### Key Risks\n`;
-      p.keyRisks?.forEach(r => {
-        mdContent += `- **[${r.level}]** ${r.risk}: ${r.impact} *(Mitigation: ${r.mitigation})*\n`;
-      });
-      mdContent += `\n#### Critical Decisions Approved\n`;
-      p.criticalDecisions?.forEach(d => mdContent += `- ${d}\n`);
-      mdContent += `\n#### Way Forward\n`;
-      p.wayForward?.forEach(w => mdContent += `- ${w.task} (Owner: ${w.owner}, Target: ${w.deadline})\n`);
+      mdContent += `Date: ${p.meetingDate || reportDate}\n`;
+      mdContent += `Project name: ${p.projectName}\n`;
+      mdContent += `Executive summary: ${p.summary}\n\n`;
+      
+      mdContent += `Project risks:\n`;
+      if (p.keyRisks && p.keyRisks.length > 0) {
+        p.keyRisks.forEach(r => {
+          const detail = typeof r === 'string' ? r : (r.risk ? `${r.risk} (${r.impact || 'High impact'})` : JSON.stringify(r));
+          mdContent += `• ${detail}\n`;
+        });
+      } else {
+        mdContent += `• No critical risks reported for this period.\n`;
+      }
+      
+      mdContent += `\nKey decisions:\n`;
+      if (p.criticalDecisions && p.criticalDecisions.length > 0) {
+        p.criticalDecisions.forEach(d => mdContent += `• ${d}\n`);
+      } else {
+        mdContent += `• No key decisions recorded this period.\n`;
+      }
+
+      mdContent += `\nThe Way Forward:\n`;
+      if (p.wayForward && p.wayForward.length > 0) {
+        p.wayForward.forEach(w => {
+          const detail = typeof w === 'string' ? w : `${w.task} (${w.owner ? 'Owner: ' + w.owner : ''}${w.deadline ? ', Target: ' + w.deadline : ''})`;
+          mdContent += `• ${detail}\n`;
+        });
+      } else {
+        mdContent += `• Continue execution according to project schedule.\n`;
+      }
+      
       mdContent += `\n---\n\n`;
 
       const projBreakdownPath = path.join(breakdownFolder, `${p.projectName.replace(/[^a-zA-Z0-9_-]/g, '_')}_Breakdown.json`);
@@ -459,15 +480,35 @@ app.post('/api/generate-report', async (req, res) => {
         const rawContent = latestTab?.rawText || '';
 
         const prompt = `
-Analyze the following project meeting minutes for: "${proj.projectName}".
-Extract:
-1. Past week Executive Summary (2-3 sentences).
-2. Status ('On Track', 'At Risk', or 'Off Track').
-3. Key Risks (item, impact, level, mitigation).
-4. Critical Decisions made.
-5. Way Forward (task, owner, deadline).
+You are an executive project management AI. Analyze the following meeting minutes for "${proj.projectName}" and output structured data.
 
-MEETING MINUTES:
+Strict Executive Bullet-Point Style Guidelines:
+The executive report must follow this exact executive structure:
+Date: <Date>
+Project name: <Code and Name>
+Executive summary: <High-level executive overview paragraph>
+Project risks:
+• <Bullet points focusing on severe technical, budget, or structural risks>
+Key decisions:
+• <Bullet points focusing on approved strategic/scope decisions>
+Way forward:
+• <Bullet points focusing on clear actionable next steps>
+
+EXAMPLE OF DESIRED EXECUTIVE STYLE:
+Date: 2026-08-21
+Project name: Prj041 Uppercamp Offices (UC 6A)
+Executive summary: The Uppercamp Offices project is currently focused on navigating structural limitations and fire/life-safety compliance requirements to finalize the interior fit-out and rooftop development plans. An evidence-based behavioral design framework has been presented, but implementation will be phased due to existing budget and severe structural load constraints.
+Project risks:
+• Structural assessments revealed the building’s foundations and internal columns are inadequate to support the proposed rooftop ePod, with severe corrosion observed.
+• Ambiguity regarding fire escape widths and secondary stairwell requirements threatens to delay municipal plan approvals.
+Key decisions:
+• Resolved to execute the interior fit-out in phases, beginning with the ground floor and parts of the first floor to align with current budget limits (R8M - R12M).
+• For the rooftop development, an external structural skeleton spanning the perimeter columns will be used to bypass the compromised internal foundation supports.
+Way forward:
+• Consult with the City Fire Chief to secure conceptual approval for the fire strategy and stairwell layouts.
+• Urgently source concrete corrosion protection treatments to prevent delays to the ground floor fit-out.
+
+MEETING MINUTES TO ANALYZE:
 """
 ${rawContent}
 """
