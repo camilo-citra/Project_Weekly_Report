@@ -1,0 +1,53 @@
+{
+  "id": "archive-9-1787328470243",
+  "projectName": "\\[Phase 14 CentralBlue \\- Structural Engineering Concerns Review\\]",
+  "docTitle": "prj133 - Ph2 and Ph14 Spin Dr Strategy (1).md",
+  "latestTabName": "Archived Minutes (2026-W34_2026-08-21)",
+  "meetingDate": "2026-08-21",
+  "status": "At Risk",
+  "statusColor": "amber",
+  "summary": "To formally document and escalate severe structural engineering concerns observed in the Phase 14 houses at CentralBlue, specifically relating to cracking, water ingress, and structural stability of the Citra panels.",
+  "keyRisks": [
+    {
+      "risk": "Risk Register",
+      "impact": "Requires proactive oversight to maintain timeline.",
+      "level": "Low",
+      "mitigation": "Monitored closely by project lead."
+    },
+    {
+      "risk": "Structural Failure",
+      "impact": "The observed leaning wall and structural cracks indicate a potential for partial or complete structural failure.",
+      "level": "High",
+      "mitigation": "Conduct an immediate independent structural assessment; implement temporary propping if advised."
+    },
+    {
+      "risk": "Material Degradation",
+      "impact": "MgO boards lose 30% strength when wet and leach chlorides, threatening the long-term structural integrity and causing reinforcement corrosion.",
+      "level": "High",
+      "mitigation": "R\\&D to finalize lab testing; incorporate findings into a revised structural assessment; investigate mitigation for existing units."
+    },
+    {
+      "risk": "Reinforcement Corrosion",
+      "impact": "Clusters 6A and 2B utilize steel reinforcing which is highly susceptible to corrosion from the leached chlorides and water ingress.",
+      "level": "High",
+      "mitigation": "Prioritize investigation of clusters 6A and 2B; assess corrosion levels and develop targeted repair strategies."
+    },
+    {
+      "risk": "Liability and Compliance",
+      "impact": "The project's engineering oversight may not comply with ECSA requirements for complex engineering activities, potentially leading to legal and safety liabilities.",
+      "level": "High",
+      "mitigation": "Appoint a Professional Engineer (PrEng) for the independent review; audit past engineering decisions and quality control records."
+    }
+  ],
+  "criticalDecisions": [
+    ": Escalate the structural concerns officially to Cheryl Hillman (Citra Development).",
+    ": Recommend an independent design review and structural assessment by a professional engineer, in line with ECSA prescriptions for complex engineering activities."
+  ],
+  "wayForward": [
+    {
+      "task": "Finalize technical scope and issue updated project plan",
+      "owner": "Project Manager",
+      "deadline": "Next Sync"
+    }
+  ]
+}

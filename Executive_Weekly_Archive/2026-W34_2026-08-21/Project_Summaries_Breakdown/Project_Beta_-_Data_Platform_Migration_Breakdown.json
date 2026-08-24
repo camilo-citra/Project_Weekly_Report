@@ -1,0 +1,45 @@
+{
+  "id": "doc-2",
+  "projectName": "Project Beta - Data Platform Migration",
+  "docTitle": "Beta Data Migration Weekly Minutes",
+  "latestTabName": "Meeting 2026-08-20 (Current)",
+  "meetingDate": "2026-08-20",
+  "status": "On Track",
+  "statusColor": "emerald",
+  "summary": "Successfully migrated 45 of 50 legacy PostgreSQL data pipelines to Dataproc & BigQuery, resulting in a 4.2x average query performance gain and 99.998% data consistency verification.",
+  "keyRisks": [
+    {
+      "risk": "BigQuery raw streaming ingestion storage cost tracking 12% over budget",
+      "impact": "Budget overrun if log retention and partitioning are not optimized.",
+      "level": "Medium",
+      "mitigation": "Adopting BigQuery Managed Tables with auto-tiering to cold storage."
+    },
+    {
+      "risk": "Legacy Python 2 ETL scripts in accounting pipeline require refactoring",
+      "impact": "Potential failure during final cutover.",
+      "level": "Low",
+      "mitigation": "Refactoring scheduled during final dry-run."
+    }
+  ],
+  "criticalDecisions": [
+    "Adopted BigQuery Managed Tables with auto-tiering to cold storage to reduce storage expenditure.",
+    "Approved Finance Data Warehouse cutover date for Sept 01, 2026."
+  ],
+  "wayForward": [
+    {
+      "task": "Apply timestamp partitioning on streaming ingestion tables",
+      "owner": "Elena Rostova",
+      "deadline": "Aug 22, 2026"
+    },
+    {
+      "task": "Train BI team on new Looker dashboards connected to BigQuery",
+      "owner": "Chen Wei",
+      "deadline": "Aug 25, 2026"
+    },
+    {
+      "task": "Execute parallel dry-run comparison between Postgres and BigQuery",
+      "owner": "Marcus Vance",
+      "deadline": "Aug 28, 2026"
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "id": "archive-8-1787328470243",
+  "projectName": "US/ZA \\- Production optimisation",
+  "docTitle": "prj045 Prototypes US_PM_Meeting minutes (1).md",
+  "latestTabName": "Archived Minutes (2026-W34_2026-08-21)",
+  "meetingDate": "2026-08-21",
+  "status": "At Risk",
+  "statusColor": "amber",
+  "summary": "To address production complications affecting the Pine Brook project and the US prototype, establish a mandatory design freeze process, and align architectural design requirements with manufacturing capabilities to reduce material waste and production costs.",
+  "keyRisks": [
+    {
+      "risk": "Risk Register",
+      "impact": "Requires proactive oversight to maintain timeline.",
+      "level": "Low",
+      "mitigation": "Monitored closely by project lead."
+    },
+    {
+      "risk": "Unique Panel Cost Inflation",
+      "impact": "High volumes of unique, specialized panel cuts increase manufacturing time and costs significantly.",
+      "level": "High",
+      "mitigation": "Rationalize dimensions to 50mm increments and establish a KPI to strictly limit total unique panel depths."
+    },
+    {
+      "risk": "Profile 2 Cutting Failures",
+      "impact": "Current CNC machinery struggles with complex concave/convex geometries, leading to production bottlenecks.",
+      "level": "Medium",
+      "mitigation": "Replace curved geometries with straight-cut elements in the production model and apply PU foam on-site."
+    },
+    {
+      "risk": "Panel Damage During Assembly",
+      "impact": "Extremely heavy \"elephant ear\" panels pose significant transport and on-site handling risks, including breaking vital web connections.",
+      "level": "High",
+      "mitigation": "Implement specialized rack systems for transport and simplify splicing methods for high scaffolding assembly."
+    }
+  ],
+  "criticalDecisions": [
+    ": The team mandates a design freeze and value engineering process prior to project development to ensure designs align with production capabilities.",
+    ": The production and engineering units are now responsible for defining grid line layouts to minimize production complexity, rather than leaving this entirely to the architectural design team.",
+    ": The design of the T-piece roof-to-wall joint is simplified to a straight-cut detail to improve production feasibility for the prototype.",
+    ": The BIM modeling workflow is refined to eliminate duplication; Engineering will focus on standard details and solid wall structures, while the production unit develops the internal production models.",
+    ": Production will establish a process to snap measurements to 50mm or 25mm increments to severely limit the number of unique panel depths per project."
+  ],
+  "wayForward": [
+    {
+      "task": "Finalize technical scope and issue updated project plan",
+      "owner": "Project Manager",
+      "deadline": "Next Sync"
+    }
+  ]
+}

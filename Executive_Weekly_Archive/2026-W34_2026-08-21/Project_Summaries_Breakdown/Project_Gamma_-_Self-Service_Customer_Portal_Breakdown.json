@@ -1,0 +1,45 @@
+{
+  "id": "doc-3",
+  "projectName": "Project Gamma - Self-Service Customer Portal",
+  "docTitle": "Gamma Portal Steering Committee Minutes",
+  "latestTabName": "2026-08-19 Minutes (Latest)",
+  "meetingDate": "2026-08-19",
+  "status": "At Risk",
+  "statusColor": "amber",
+  "summary": "Launched beta testing for 500 enterprise clients with 100% system uptime. Positive user feedback on automated license assignment and instant API key creation.",
+  "keyRisks": [
+    {
+      "risk": "Auth0 rate limiting threshold hits during peak morning login spikes",
+      "impact": "Intermittent login delays for enterprise users during peak hours.",
+      "level": "High",
+      "mitigation": "Deploying custom Redis token session caching layer."
+    },
+    {
+      "risk": "Tablet resolution billing invoice download layout misalignment",
+      "impact": "Cosmetic display issue on iPad devices.",
+      "level": "Low",
+      "mitigation": "Frontend team applying CSS grid fixes."
+    }
+  ],
+  "criticalDecisions": [
+    "Approved implementation of Redis token session cache to reduce Auth0 API requests by 80%.",
+    "Enforced mandatory Multi-Factor Authentication (MFA) for all administrative sub-accounts."
+  ],
+  "wayForward": [
+    {
+      "task": "Deploy Redis token caching middleware",
+      "owner": "Kevin O'Connor",
+      "deadline": "Aug 22, 2026"
+    },
+    {
+      "task": "Conduct penetration test on API key self-generation workflow",
+      "owner": "Rachel Adams",
+      "deadline": "Aug 24, 2026"
+    },
+    {
+      "task": "Compile feedback report from initial 500 beta users",
+      "owner": "Julia Zhang",
+      "deadline": "Aug 25, 2026"
+    }
+  ]
+}

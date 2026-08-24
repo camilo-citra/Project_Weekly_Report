@@ -1,0 +1,55 @@
+{
+  "id": "archive-0-1787328922513",
+  "projectName": "PRJ035 - Pinebrook: Parcel D Coordination Meeting",
+  "docTitle": "prj035 Pinebrook PhD Minutes (1).md",
+  "latestTabName": "Archived Minutes (2026-W34_2026-08-21)",
+  "meetingDate": "2026-08-21",
+  "status": "At Risk",
+  "statusColor": "amber",
+  "summary": "To review site sections, address discrepancies in level differences between engineering and landscape models, align on retaining wall strategies, and evaluate the impacts of council density requirements on the urban design framework for Parcel D.",
+  "keyRisks": [
+    {
+      "risk": "Risk Register",
+      "impact": "Requires proactive oversight to maintain timeline.",
+      "level": "Low",
+      "mitigation": "Monitored closely by project lead."
+    },
+    {
+      "risk": "Regulatory Classification Risk",
+      "impact": "Site might be classified as H3 occupancy, triggering unmanageable 1:25 gradient requirements for the first 5m.",
+      "level": "High",
+      "mitigation": "Consult with the council immediately to clarify classification; maintain the project as a single parcel but manage grading creatively."
+    },
+    {
+      "risk": "Council Density Approval",
+      "impact": "Council is dissatisfied with current density and demands more low-cost housing, threatening SDP approval.",
+      "level": "High",
+      "mitigation": "Resubmit the urban design framework to address density concerns and monitor timeline."
+    },
+    {
+      "risk": "Budget Overruns on Retaining Walls",
+      "impact": "Extensive retaining requirements due to site topography could exceed budget.",
+      "level": "Medium",
+      "mitigation": "Utilize a two-tier strategy and prioritize cost-effective materials like brick and Terraforce where appropriate instead of expensive gabions."
+    }
+  ],
+  "criticalDecisions": [
+    ": The perimeter boundary will utilize a low wall (200-400mm) with clear view fencing, while using gabions for retaining along the remainder of the boundary.",
+    ": Implement a two-tier retaining wall design rather than a single 2m high retaining wall to optimize costs and site requirements.",
+    ": The mini substation location is set to the roadside position, acting as a compromise to keep it out of the public domain while maintaining accessibility.",
+    ": The development layout will be adjusted by shifting specific units/rows back to ensure the required 5m distance from the garage to the road is achieved, allowing for parking.",
+    ": The chosen pathway finish is a fine exposed aggregate in a sandstone color.",
+    ": The requirement for a continuous roadside walkway is removed, relying instead on the existing network of internal walkways.",
+    ": Gabions will be excluded from green space areas where they are not appropriate or feasible; brick walls with concrete fill are selected as the preferred material for boundary conditions.",
+    ": The road will be sloped toward the higher side of properties to intercept stormwater and prevent runoff into lower-lying plots.",
+    ": The property will remain a single site rather than being subdivided, managing the associated design challenges.",
+    ": Terraforce is selected as the cost-effective retaining method for the verge areas near driveways."
+  ],
+  "wayForward": [
+    {
+      "task": "Finalize technical scope and issue updated project plan",
+      "owner": "Project Manager",
+      "deadline": "Next Sync"
+    }
+  ]
+}

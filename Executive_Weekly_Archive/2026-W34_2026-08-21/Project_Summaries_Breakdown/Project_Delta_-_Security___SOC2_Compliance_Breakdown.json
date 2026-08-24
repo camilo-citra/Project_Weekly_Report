@@ -1,0 +1,45 @@
+{
+  "id": "doc-4",
+  "projectName": "Project Delta - Security & SOC2 Compliance",
+  "docTitle": "Delta Compliance Program Master Log",
+  "latestTabName": "Aug 21 Weekly Sync (Latest)",
+  "meetingDate": "2026-08-21",
+  "status": "On Track",
+  "statusColor": "emerald",
+  "summary": "Completed 92 of 98 SOC2 controls audit evidence collections. KPMG external auditors completed Week 1 with zero critical findings. Disaster recovery drill achieved RTO under 14 minutes.",
+  "keyRisks": [
+    {
+      "risk": "3 third-party SaaS vendors pending security risk assessment forms",
+      "impact": "Minor audit documentation gap if delay persists past audit window.",
+      "level": "Medium",
+      "mitigation": "Final reminder notices dispatched."
+    },
+    {
+      "risk": "Security awareness training completion rate at 88% (goal 100%)",
+      "impact": "Audit compliance finding if employee training targets are missed.",
+      "level": "Low",
+      "mitigation": "Automated Slack reminders triggered daily."
+    }
+  ],
+  "criticalDecisions": [
+    "Approved automated off-boarding script integration with Okta to revoke access within 1 hour.",
+    "Accepted low-level risk regarding legacy VPN fallback pending Q4 zero-trust deployment."
+  ],
+  "wayForward": [
+    {
+      "task": "Issue final reminder notice to missing 3 SaaS vendors",
+      "owner": "Sophia Bennett",
+      "deadline": "Aug 23, 2026"
+    },
+    {
+      "task": "Finalize automated Okta off-boarding webhook verification",
+      "owner": "Tom Harris",
+      "deadline": "Aug 24, 2026"
+    },
+    {
+      "task": "Deliver executive briefing to Board Audit Committee",
+      "owner": "Liam Gallagher",
+      "deadline": "Aug 26, 2026"
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "id": "archive-6-1787328470242",
+  "projectName": "Uppercamp Electrical scope \\- Brief alignment",
+  "docTitle": "prj041 - UC 6A Design Minutes (1).md",
+  "latestTabName": "Archived Minutes (2026-W34_2026-08-21)",
+  "meetingDate": "2026-08-21",
+  "status": "At Risk",
+  "statusColor": "amber",
+  "summary": "The objective of the meeting was to brief the consultant on the electrical scope for two separate project sites (an office building and a factory) and to align on the project governance, required designs, and compliance sign-offs.",
+  "keyRisks": [
+    {
+      "risk": "Risk Register",
+      "impact": "Requires proactive oversight to maintain timeline.",
+      "level": "Low",
+      "mitigation": "Monitored closely by project lead."
+    },
+    {
+      "risk": "Factory Layout Uncertainty",
+      "impact": "The lack of a fixed layout for the factory site may delay final electrical and extraction designs.",
+      "level": "Medium",
+      "mitigation": "Await confirmation of the layout before finalizing designs to prevent rework."
+    },
+    {
+      "risk": "Compliance Delays",
+      "impact": "Failure to secure necessary HVAC and fire designs by an engineer could delay council approval for the office building.",
+      "level": "High",
+      "mitigation": "Appoint an electrical engineer promptly to finalize designs and council submission documentation."
+    }
+  ],
+  "criticalDecisions": [
+    ": The new work scope regarding the office building and the factory will be managed as additional fees to the existing agreement, with invoices processed separately to maintain a clear distinction between the projects.",
+    ": The electrical contractor is responsible for executing the installation and issuing the Certificate of Compliance (COC), while the engineer will provide the design and necessary documentation/sign-offs for council approval."
+  ],
+  "wayForward": [
+    {
+      "task": "Finalize technical scope and issue updated project plan",
+      "owner": "Project Manager",
+      "deadline": "Next Sync"
+    }
+  ]
+}
